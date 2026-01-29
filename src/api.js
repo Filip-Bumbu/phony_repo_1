@@ -39,4 +39,32 @@ app.put('/api/users/:id', (req, res) => {
   res.json(user);
 });
 
+app.post('/api/messaging/host', (req, res) => {
+  const { sourceUid, targetUid, phoneNumbers } = req.body;
+  if (!sourceUid || !targetUid || !phoneNumbers?.length) {
+    return res.status(400).json({ error: 'sourceUid, targetUid, and phoneNumbers are required' });
+  }
+  res.status(201).json({
+    id: Date.now(),
+    sourceUid,
+    targetUid,
+    phoneNumbers,
+    status: 'active'
+  });
+});
+
+app.get('/api/messaging/host/:id', (req, res) => {
+  res.json({
+    id: req.params.id,
+    sourceUid: 'uid-123',
+    targetUid: 'uid-456',
+    phoneNumbers: ['+15551234567'],
+    status: 'active'
+  });
+});
+
+app.delete('/api/messaging/host/:id', (req, res) => {
+  res.status(204).send();
+});
+
 app.listen(3000);
